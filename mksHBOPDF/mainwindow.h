@@ -18,8 +18,12 @@ public:
 private slots:
     void on_btnSeleccionarPDF_clicked();
 
+    void on_btnProcesar_released();
+
 private:
     Ui::MainWindow *ui;
+    QString _filename;
+    QString _fileContents;
 };
 
 #endif // MAINWINDOW_H
