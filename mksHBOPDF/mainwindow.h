@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
+    void defineTags();
+
 private slots:
     void on_btnSeleccionarPDF_clicked();
 
@@ -24,6 +27,7 @@ private:
     Ui::MainWindow *ui;
     QString _filename;
     QString _fileContents;
+
 };
 
 #endif // MAINWINDOW_H

@@ -32,4 +32,10 @@ void MainWindow::on_btnProcesar_released()
 {
     DocumentParser doc(_fileContents, this);
     doc.parse();
+    llenarArbol(doc);
+}
+
+void MainWindow::defineTags()
+{
+
 }

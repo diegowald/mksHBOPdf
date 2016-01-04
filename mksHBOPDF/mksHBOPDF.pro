@@ -12,11 +12,18 @@ TARGET = mksHBOPDF
 TEMPLATE = app
 
 
+CONFIG += c++11
+
+
 SOURCES += main.cpp\
         mainwindow.cpp \
-    documentparser.cpp
+    documentparser.cpp \
+    tag.cpp \
+    tagvalue.cpp
 
 HEADERS  += mainwindow.h \
-    documentparser.h
+    documentparser.h \
+    tag.h \
+    tagvalue.h
 
 FORMS    += mainwindow.ui
