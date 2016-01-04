@@ -39,3 +39,8 @@ void MainWindow::defineTags()
 {
 
 }
+
+void MainWindow::llenarArbol(DocumentParser &doc)
+{
+    doc.llenarArbol(ui->treeWidget);
+}

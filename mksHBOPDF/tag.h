@@ -28,6 +28,7 @@ public:
 
     bool isComplex() const;
 
+
 private:
     QPair<QString, int> extractValueUsingDelimiters(const QString &source, int startPosition);
     QPair<QString, int> extractValueUsingRows(const QString &source, int startPosition);

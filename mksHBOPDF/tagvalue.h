@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QMap>
+#include <QTreeWidgetItem>
+
 
 class TagValue;
 
@@ -22,6 +24,7 @@ public:
     int position() const;
 
     void addSubValue(TagValuePtr subValue);
+    QTreeWidgetItem * assTreeItem();
 
 signals:
 

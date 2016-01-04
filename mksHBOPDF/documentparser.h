@@ -4,7 +4,7 @@
 
 #include <QObject>
 #include "tag.h"
-
+#include <QTreeWidget>
 
 class DocumentParser : public QObject
 {
@@ -13,6 +13,7 @@ public:
     explicit DocumentParser(const QString &documentContents, QObject *parent = 0);
     bool parse();
 
+    void llenarArbol(QTreeWidget *treeWidget);
 private:
     QString extract(const QString &textoIzquierda, const QString &textoDerecha, int position = 0);
     QString extract(const QString from, const QString &textoIzquierda, const QString &textoDerecha, int position = 0);

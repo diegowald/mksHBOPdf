@@ -118,3 +118,17 @@ Contratadas
     createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "email", false, "Correo Electrónico: ", "\n");
     createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "representanteLegal", false, "Representante Legal: ", "\n");
 }
+
+void DocumentParser::llenarArbol(QTreeWidget *treeWidget)
+{
+    treeWidget->clear();
+    foreach (QString key, _tagValues.keys())
+    {
+        QList<TagValuePtr> tags = _tagValues[key];
+        foreach (TagValuePtr tv, tags)
+        {
+            QTreeWidgetItem *item = tv->assTreeItem();
+            treeWidget->addTopLevelItem(item);
+        }
+    }
+}

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "documentparser.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,7 @@ public:
 
 private:
     void defineTags();
+    void llenarArbol(DocumentParser &doc);
 
 private slots:
     void on_btnSeleccionarPDF_clicked();
