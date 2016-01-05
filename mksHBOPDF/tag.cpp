@@ -104,6 +104,7 @@ QPair<QString, int> Tag::extractValueUsingDelimiters(const QString &source, int 
     if ((desde > -1) && (hasta > -1))
     {
         QString valor = source.mid(desde, hasta - desde);
+        qDebug() << valor;
         result.first = valor;
         result.second = desde;
     }
