@@ -19,9 +19,9 @@ private:
     QString extract(const QString from, const QString &textoIzquierda, const QString &textoDerecha, int position = 0);
 
     void defineTagDefinitions();
-    void createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right);
-    void createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right);
-    void createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount);
+    TagPtr createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right);
+    TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right);
+    TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount);
 
 signals:
 

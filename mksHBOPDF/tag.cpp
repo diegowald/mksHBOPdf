@@ -51,6 +51,7 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
     QPair<QString, int> valor;
     int fromPosition = 0;
 
+    int currentIndex = 0;
     while (fromPosition != -1)
     {
         if (_rowCount == 0)
@@ -59,7 +60,7 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
             valor = extractValueUsingRows(source, fromPosition);
 
         qDebug() << _tagName << ": " << valor.first;
-        TagValuePtr res = TagValuePtr::create(_tagName, valor.first, valor.second);
+        TagValuePtr res = TagValuePtr::create(_isMultiple ? QString("%1:%2").arg(_tagName).arg(currentIndex) : _tagName, valor.first, valor.second);
         result.append(res);
 
         if ((valor.second > -1) && isComplex())
@@ -69,6 +70,7 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
                 TagPtr tag = _subtags[key];
                 qDebug() << key << ", " << tag->tagName();
                 QList<TagValuePtr> subValues = tag->extractValue(valor.first);
+
                 foreach (TagValuePtr tv, subValues)
                 {
                     res->addSubValue(tv);
@@ -76,6 +78,8 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
             }
         }
         fromPosition = _isMultiple ? valor.second + valor.first.length(): -1;
+        if (_isMultiple)
+            currentIndex++;
     }
     return result;
 }
@@ -131,3 +135,7 @@ bool Tag::isComplex() const
     return _subtags.count() > 0;
 }
 
+bool Tag::isMultiple() const
+{
+    return _isMultiple;
+}

@@ -27,6 +27,7 @@ public:
     QList<TagValuePtr> extractValue(const QString &source);
 
     bool isComplex() const;
+    bool isMultiple() const;
 
 
 private:

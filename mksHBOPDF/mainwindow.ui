@@ -88,7 +88,12 @@
      <widget class="QTreeWidget" name="treeWidget">
       <column>
        <property name="text">
-        <string notr="true">1</string>
+        <string notr="true">Clave</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Valor</string>
        </property>
       </column>
      </widget>

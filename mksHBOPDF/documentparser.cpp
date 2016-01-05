@@ -30,58 +30,62 @@ QString DocumentParser::extract(const QString from, const QString &textoIzquierd
     return from.mid(desde, hasta - desde);
 }
 
-void DocumentParser::createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right)
+TagPtr DocumentParser::createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right)
 {
     TagPtr tag = TagPtr::create(tagName, isMultiple, left, right);
     _tagDefinition[tag->tagName()] = tag;
+    return tag;
 }
 
-void DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right)
+TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right)
 {
     TagPtr tag = TagPtr::create(tagName, isMultiple, left, right);
     parentTag->addSubTag(tag);
+    return tag;
 }
 
-void DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount)
+TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount)
 {
     TagPtr tag = TagPtr::create(tagName, isMultiple, rowcount);
     parentTag->addSubTag(tag);
+    return tag;
 }
 
 void DocumentParser::defineTagDefinitions()
 {
-    createTagDefinition("contrato", false, "CONTRATO DE PRESTACIÓN DE SERVICIOS TURISTICOS Nº ", "\n");
-    createTagDefinition("codigoSeguridad", false, "CÓDIGO DE SEGURIDAD:", "\n");
-    createTagDefinition("lugar", false, "Lugar:", "\n");
-    createTagDefinition("fecha", false, "Fecha:", "\n");
+    TagPtr root = createTagDefinition("definition", false, "", "@@END@@");
+    createTagDefinition(root, "contrato", false, "CONTRATO DE PRESTACIÓN DE SERVICIOS TURISTICOS Nº ", "\n");
+    createTagDefinition(root, "codigoSeguridad", false, "CÓDIGO DE SEGURIDAD:", "\n");
+    createTagDefinition(root, "lugar", false, "Lugar:", "\n");
+    createTagDefinition(root, "fecha", false, "Fecha:", "\n");
 
-    createTagDefinition("establecimiento", false, "Establecimiento Educativo: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "grado", false, "División/Grado: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "cantPasajeros", false, "Cant. estimada de pax: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "turno", false, "Turno: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "codPostal", false, "Cod. Post.: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "domicilio", false, "Domicilio: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "localidad", false, "Localidad: ", "\n");
-    createTagDefinition(_tagDefinition["establecimiento"], "provincia", false, "Provincia: ", "\n");
+    TagPtr tag = createTagDefinition(root, "establecimiento", false, "Establecimiento Educativo: ", "\n");
+    createTagDefinition(tag, "grado", false, "División/Grado: ", "\n");
+    createTagDefinition(tag, "cantPasajeros", false, "Cant. estimada de pax: ", "\n");
+    createTagDefinition(tag, "turno", false, "Turno: ", "\n");
+    createTagDefinition(tag, "codPostal", false, "Cod. Post.: ", "\n");
+    createTagDefinition(tag, "domicilio", false, "Domicilio: ", "\n");
+    createTagDefinition(tag, "localidad", false, "Localidad: ", "\n");
+    createTagDefinition(tag, "provincia", false, "Provincia: ", "\n");
 
-    createTagDefinition("representantes", false, "Representantes del Contingente:", "Servicios a Prestar por la empresa:");
-    createTagDefinition(_tagDefinition["representantes"], "nombre", false, "Apellido y Nombres:", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "dni", false, "DNI No: ", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "domicilio", false, "Domicilio: ", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "telefono", false, "Télefono: ", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "codPostal", false, "Cod. Postal: ", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "localidad", false, "Localidad: ", "\n");
-    createTagDefinition(_tagDefinition["representantes"], "mail", false, "Mail: ", "\n");
+    tag = createTagDefinition(root, "representantes", false, "Representantes del Contingente:", "Servicios a Prestar por la empresa:");
+    createTagDefinition(tag, "nombre", false, "Apellido y Nombres:", "\n");
+    createTagDefinition(tag, "dni", false, "DNI No: ", "\n");
+    createTagDefinition(tag, "domicilio", false, "Domicilio: ", "\n");
+    createTagDefinition(tag, "telefono", false, "Télefono: ", "\n");
+    createTagDefinition(tag, "codPostal", false, "Cod. Postal: ", "\n");
+    createTagDefinition(tag, "localidad", false, "Localidad: ", "\n");
+    createTagDefinition(tag, "mail", false, "Mail: ", "\n");
 
-    createTagDefinition("servicios", false, "Servicios a Prestar por la empresa:", "Hotelería:");
-    createTagDefinition(_tagDefinition["servicios"], "destino", false, "Destino\n", "\n");
-    createTagDefinition(_tagDefinition["servicios"], "dias", false, "Dias: ", "\n");
-    createTagDefinition(_tagDefinition["servicios"], "noches", false, "Noches: ", "\n");
-    createTagDefinition(_tagDefinition["servicios"], "quincena", false, "Quincena: ", "\n");
-    createTagDefinition(_tagDefinition["servicios"], "mes", false, "Mes: ", "\n");
-    createTagDefinition(_tagDefinition["servicios"], "anio", false, "Año: ", "\n");
+    tag = createTagDefinition(root, "servicios", false, "Servicios a Prestar por la empresa:", "Hotelería:");
+    createTagDefinition(tag, "destino", false, "Destino\n", "\n");
+    createTagDefinition(tag, "dias", false, "Dias: ", "\n");
+    createTagDefinition(tag, "noches", false, "Noches: ", "\n");
+    createTagDefinition(tag, "quincena", false, "Quincena: ", "\n");
+    createTagDefinition(tag, "mes", false, "Mes: ", "\n");
+    createTagDefinition(tag, "anio", false, "Año: ", "\n");
 
-    createTagDefinition("hoteleria", false, "Hotelería:", "Transporte de Larga Distancia:");
+    createTagDefinition(root, "hoteleria", false, "Hotelería:", "Transporte de Larga Distancia:");
     /*
 Hotel Domicilio Habitaciones Pensión
 KOLCADOR SA - KOLCADOR VIAJES RAMBLA REP. DEL PERU CUADRUPLE MEDIA
@@ -93,30 +97,30 @@ Contratadas
         Transporte de Larga Distancia:
     */
 
-    createTagDefinition("transporteLargaDistancia", false, "Transporte de Larga Distancia:", "Transporte para traslados en el lugar de destino:");
-    createTagDefinition("transporteTrasladosLugarDestino", false, "Transporte para traslados en el lugar de destino:", "Seguros y Asistencias Médica - Establecidos por la Ley No 25.599, modificada por la");
+    createTagDefinition(root, "transporteLargaDistancia", false, "Transporte de Larga Distancia:", "Transporte para traslados en el lugar de destino:");
+    createTagDefinition(root, "transporteTrasladosLugarDestino", false, "Transporte para traslados en el lugar de destino:", "Seguros y Asistencias Médica - Establecidos por la Ley No 25.599, modificada por la");
 
 
-    createTagDefinition("seguros", false, "Seguros y Asistencias Médica - Establecidos por la Ley No 25.599, modificada por la\nley 26.208, reglamentados por Res.: 237/07", "Excursiones");
-    createTagDefinition(_tagDefinition["seguros"], "polizaAccidentesPersonales", false, "Póliza de Accidentes Personales", "Póliza de Responsabilidad Civil");
-    createTagDefinition(_tagDefinition["seguros"], "polizaResponsabilidadCivil", false, "Póliza de Responsabilidad Civil", "Asistencia Médica y Farmacéutica");
-    createTagDefinition(_tagDefinition["seguros"], "asistenciaMedica", false, "Asistencia Médica y Farmacéutica ", "Asistencia al Viajero");
-    createTagDefinition(_tagDefinition["seguros"], "asistenciaViajero", false, "Asistencia al Viajero", "Excursiones");
+    tag = createTagDefinition(root, "seguros", false, "Seguros y Asistencias Médica - Establecidos por la Ley No 25.599, modificada por la\nley 26.208, reglamentados por Res.: 237/07", "Excursiones");
+    createTagDefinition(tag, "polizaAccidentesPersonales", false, "Póliza de Accidentes Personales", "Póliza de Responsabilidad Civil");
+    createTagDefinition(tag, "polizaResponsabilidadCivil", false, "Póliza de Responsabilidad Civil", "Asistencia Médica y Farmacéutica");
+    createTagDefinition(tag, "asistenciaMedica", false, "Asistencia Médica y Farmacéutica ", "Asistencia al Viajero");
+    createTagDefinition(tag, "asistenciaViajero", false, "Asistencia al Viajero", "Excursiones");
 
-    createTagDefinition("precioPorContingente", false, "Precio por Contingente: $", "\n");
-    createTagDefinition("precioPromedioPorPasajero", false, "Precio Promedio por Pasajero: $", "\n");
+    createTagDefinition(root, "precioPorContingente", false, "Precio por Contingente: $", "\n");
+    createTagDefinition(root, "precioPromedioPorPasajero", false, "Precio Promedio por Pasajero: $", "\n");
 
-    createTagDefinition("contingente", false, "Listado de integrantes del contingente:\n", "@@END@@");
+    tag = createTagDefinition(root, "contingente", false, "Listado de integrantes del contingente:\n", "@@END@@");
     //createTagDefinition(_tagDefinition["contingente"], "integrante", true, 13);
-    createTagDefinition(_tagDefinition["contingente"], "integrante", true, "Apellidos y Nombres: ", "Apellidos y Nombres: ");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "nombre", false, "Apellidos y Nombres: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "dni", false, "D.N.I. Nº: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "domicilio", false, "Domicilio: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "codPostal", false, "Post.: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "telefono", false, "Teléfono: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "localidad", false, "Localidad: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "email", false, "Correo Electrónico: ", "\n");
-    createTagDefinition(_tagDefinition["contingente"]->subtags()["integrante"], "representanteLegal", false, "Representante Legal: ", "\n");
+    tag = createTagDefinition(tag, "integrante", true, "Apellidos y Nombres: ", "Apellidos y Nombres: ");
+    createTagDefinition(tag, "nombre", false, "Apellidos y Nombres: ", "\n");
+    createTagDefinition(tag, "dni", false, "D.N.I. Nº: ", "\n");
+    createTagDefinition(tag, "domicilio", false, "Domicilio: ", "\n");
+    createTagDefinition(tag, "codPostal", false, "Post.: ", "\n");
+    createTagDefinition(tag, "telefono", false, "Teléfono: ", "\n");
+    createTagDefinition(tag, "localidad", false, "Localidad: ", "\n");
+    createTagDefinition(tag, "email", false, "Correo Electrónico: ", "\n");
+    createTagDefinition(tag, "representanteLegal", false, "Representante Legal: ", "\n");
 }
 
 void DocumentParser::llenarArbol(QTreeWidget *treeWidget)

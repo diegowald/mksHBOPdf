@@ -27,12 +27,11 @@ void TagValue::addSubValue(TagValuePtr subValue)
     _subValues[subValue->tagName()] = subValue;
 }
 
-
 QTreeWidgetItem *TagValue::assTreeItem()
 {
     QStringList lst;
     lst.append(_tagName);
-    lst.append(_subValues.count() > 0 ? QString("") : QString("1"));
+    lst.append(_subValues.count() > 1 ? QString("") : _value);
 
     QTreeWidgetItem *item = new QTreeWidgetItem(lst);
     if (_subValues.count() > 0)
