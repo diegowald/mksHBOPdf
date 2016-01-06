@@ -14,7 +14,7 @@ class Tag : public QObject
 {
     Q_OBJECT
 public:
-    explicit Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, const QString &rightDelimiter, QObject *parent = 0);
+    explicit Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, const QString &rightDelimiter, bool removeLeft, bool removeRight, QObject *parent = 0);
     explicit Tag(const QString &tagName, bool isMultiple, int rowcount);
 
     QString tagName() const;
@@ -45,6 +45,8 @@ private:
     bool _isMultiple;
     int _rowCount;
     QMap<QString, TagPtr> _subtags;
+    bool _removeLeft;
+    bool _removeRight;
 };
 
 

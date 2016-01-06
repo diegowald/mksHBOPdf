@@ -26,6 +26,8 @@ public:
     void addSubValue(TagValuePtr subValue);
     QTreeWidgetItem * assTreeItem();
 
+    QString applyOnTemplate(const QString templateText);
+
 signals:
 
 public slots:

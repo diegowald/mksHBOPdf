@@ -29,7 +29,6 @@ private:
     Ui::MainWindow *ui;
     QString _filename;
     QString _fileContents;
-
 };
 
 #endif // MAINWINDOW_H

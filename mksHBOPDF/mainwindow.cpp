@@ -33,6 +33,12 @@ void MainWindow::on_btnProcesar_released()
     DocumentParser doc(_fileContents, this);
     doc.parse();
     llenarArbol(doc);
+    QFile file("./template.html");
+    file.open(QIODevice::ReadOnly);
+    QTextStream s(&file);
+    QString txt(s.readAll());
+    QString result = doc.applyOnTemplate(txt);
+    ui->textBrowser_2->setHtml(result);
 }
 
 void MainWindow::defineTags()

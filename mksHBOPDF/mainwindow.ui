@@ -98,6 +98,9 @@
       </column>
      </widget>
     </item>
+    <item>
+     <widget class="QTextBrowser" name="textBrowser_2"/>
+    </item>
    </layout>
   </widget>
  </widget>

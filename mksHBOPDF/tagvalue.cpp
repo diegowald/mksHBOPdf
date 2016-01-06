@@ -44,3 +44,19 @@ QTreeWidgetItem *TagValue::assTreeItem()
     }
     return item;
 }
+
+
+QString TagValue::applyOnTemplate(const QString templateText)
+{
+    QString resultado = templateText;
+    if (_subValues.count() > 0)
+    {
+        foreach (QString key, _subValues.keys())
+        {
+            resultado = _subValues[key]->applyOnTemplate(resultado);
+        }
+    }
+    else
+        resultado = resultado.replace(QString("@@%1@@").arg(_tagName), _value);
+    return resultado;
+}

@@ -30,16 +30,16 @@ QString DocumentParser::extract(const QString from, const QString &textoIzquierd
     return from.mid(desde, hasta - desde);
 }
 
-TagPtr DocumentParser::createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right)
+TagPtr DocumentParser::createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right, bool removeLeft, bool removeRight)
 {
-    TagPtr tag = TagPtr::create(tagName, isMultiple, left, right);
+    TagPtr tag = TagPtr::create(tagName, isMultiple, left, right, removeLeft, removeRight);
     _tagDefinition[tag->tagName()] = tag;
     return tag;
 }
 
-TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right)
+TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right, bool removeLeft, bool removeRight)
 {
-    TagPtr tag = TagPtr::create(tagName, isMultiple, left, right);
+    TagPtr tag = TagPtr::create(tagName, isMultiple, left, right, removeLeft, removeRight);
     parentTag->addSubTag(tag);
     return tag;
 }
@@ -112,7 +112,7 @@ Contratadas
 
     tag = createTagDefinition(root, "contingente", false, "Listado de integrantes del contingente:\n", "@@END@@");
     //createTagDefinition(_tagDefinition["contingente"], "integrante", true, 13);
-    tag = createTagDefinition(tag, "integrante", true, "Apellidos y Nombres: ", "Apellidos y Nombres: ");
+    tag = createTagDefinition(tag, "integrante", true, "Apellidos y Nombres: ", "Apellidos y Nombres: ", false);
     createTagDefinition(tag, "nombre", false, "Apellidos y Nombres: ", "\n");
     createTagDefinition(tag, "dni", false, "D.N.I. Nº: ", "\n");
     createTagDefinition(tag, "domicilio", false, "Domicilio: ", "\n");
@@ -135,4 +135,20 @@ void DocumentParser::llenarArbol(QTreeWidget *treeWidget)
             treeWidget->addTopLevelItem(item);
         }
     }
+}
+
+QString DocumentParser::applyOnTemplate(const QString &templateTxt)
+{
+    QString resultado = templateTxt;
+    foreach (QString key, _tagValues.keys())
+    {
+        if (_tagValues[key].count() > 0)
+        {
+            foreach (TagValuePtr tv, _tagValues[key])
+            {
+                resultado = tv->applyOnTemplate(resultado);
+            }
+        }
+    }
+    return resultado;
 }

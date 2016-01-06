@@ -14,13 +14,16 @@ public:
     bool parse();
 
     void llenarArbol(QTreeWidget *treeWidget);
+
+    QString applyOnTemplate(const QString &templateTxt);
+
 private:
     QString extract(const QString &textoIzquierda, const QString &textoDerecha, int position = 0);
     QString extract(const QString from, const QString &textoIzquierda, const QString &textoDerecha, int position = 0);
 
     void defineTagDefinitions();
-    TagPtr createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right);
-    TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right);
+    TagPtr createTagDefinition(const QString &tagName, bool isMultiple, const QString &left, const QString &right, bool removeLeft = true, bool removeRight = true);
+    TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, const QString &left, const QString &right, bool removeLeft = true, bool removeRight = true);
     TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount);
 
 signals:

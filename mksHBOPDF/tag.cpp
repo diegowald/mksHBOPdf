@@ -1,13 +1,15 @@
 #include "tag.h"
 #include <QDebug>
 
-Tag::Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, const QString &rightDelimiter, QObject *parent) : QObject(parent)
+Tag::Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, const QString &rightDelimiter, bool removeLeft, bool removeRight, QObject *parent) : QObject(parent)
 {
     _tagName = tagName;
     _leftDelimiter = leftDelimiter;
     _rightDelimiter = rightDelimiter;
     _isMultiple = isMultiple;
     _rowCount = 0;
+    _removeLeft = removeLeft;
+    _removeRight = removeRight;
 }
 
 Tag::Tag(const QString &tagName, bool isMultiple, int rowcount)
@@ -90,7 +92,7 @@ QPair<QString, int> Tag::extractValueUsingDelimiters(const QString &source, int 
     result.first = "";
     result.second = -1;
 
-    int desde = source.indexOf(_leftDelimiter, startPosition, Qt::CaseInsensitive) + _leftDelimiter.length();
+    int desde = source.indexOf(_leftDelimiter, startPosition, Qt::CaseInsensitive);
     int hasta = -1;
     if (_rightDelimiter == "@@END@@")
     {
@@ -98,11 +100,13 @@ QPair<QString, int> Tag::extractValueUsingDelimiters(const QString &source, int 
     }
     else
     {
-        hasta = source.indexOf(_rightDelimiter, desde, Qt::CaseInsensitive);
+        hasta = source.indexOf(_rightDelimiter, desde + _leftDelimiter.length(), Qt::CaseInsensitive);
     }
 
     if ((desde > -1) && (hasta > -1))
     {
+        desde = desde + (_removeLeft ? _leftDelimiter.length() : 0);
+        hasta = hasta + (_removeRight ? 0 : _rightDelimiter.length());
         QString valor = source.mid(desde, hasta - desde);
         qDebug() << valor;
         result.first = valor;
