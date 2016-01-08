@@ -62,7 +62,9 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
             valor = extractValueUsingRows(source, fromPosition);
 
         qDebug() << _tagName << ": " << valor.first;
-        TagValuePtr res = TagValuePtr::create(_isMultiple ? QString("%1:%2").arg(_tagName).arg(currentIndex) : _tagName, valor.first, valor.second);
+        TagValuePtr res = TagValuePtr::create(sharedFromThis(), _isMultiple ? currentIndex : -1,
+                    /*
+                    _isMultiple ? QString("%1:%2").arg(_tagName).arg(currentIndex) : _tagName, */valor.first, valor.second);
         result.append(res);
 
         if ((valor.second > -1) && isComplex())

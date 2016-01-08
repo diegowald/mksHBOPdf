@@ -5,12 +5,13 @@
 #include <QMap>
 #include <QSharedPointer>
 #include "tagvalue.h"
+#include <QEnableSharedFromThis>
 
 class Tag;
 
 typedef QSharedPointer<Tag> TagPtr;
 
-class Tag : public QObject
+class Tag : public QObject, public QEnableSharedFromThis<Tag>
 {
     Q_OBJECT
 public:

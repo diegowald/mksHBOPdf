@@ -39,6 +39,12 @@ void MainWindow::on_btnProcesar_released()
     QString txt(s.readAll());
     QString result = doc.applyOnTemplate(txt);
     ui->textBrowser_2->setHtml(result);
+
+    QFile file2("./resultado.html");
+    file2.open(QIODevice::WriteOnly);
+    QTextStream s2(&file2);
+    s2 << result;
+    file2.close();
 }
 
 void MainWindow::defineTags()
