@@ -116,7 +116,7 @@
       </widget>
      </item>
      <item row="7" column="0" colspan="2">
-      <widget class="QTextBrowser" name="txtObjeto"/>
+      <widget class="QTextEdit" name="txtObjeto"/>
      </item>
     </layout>
    </item>

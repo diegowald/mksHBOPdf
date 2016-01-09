@@ -3,7 +3,9 @@
 
 Asegurado::Asegurado(QObject *parent) : QObject(parent)
 {
-
+    _id = -1;
+    _asegurado = "";
+    _porcentaje = 100.0;
 }
 
 Asegurado::Asegurado(QSqlRecord record) : QObject()

@@ -22,6 +22,8 @@ public:
     QString objeto() const;
     AseguradoPtr asegurado() const;
     double monto() const;
+    double montoDisponible() const;
+    QList<SuplementoPtr> suplementos();
 
     void setVigenciaDesde (const QDate &value);
     void setVigenciaHasta (const QDate &value);

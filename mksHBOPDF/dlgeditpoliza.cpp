@@ -63,5 +63,8 @@ void DlgEditPoliza::llenarControles()
 void DlgEditPoliza::on_toolButton_released()
 {
     DlgAsegurados dlg(this);
-    dlg.exec();
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        llenarAsegurados();
+    }
 }

@@ -9,6 +9,7 @@ DlgAsegurados::DlgAsegurados(QWidget *parent) :
     ui(new Ui::DlgAsegurados)
 {
     ui->setupUi(this);
+    llenarAsegurados();
 }
 
 DlgAsegurados::~DlgAsegurados()

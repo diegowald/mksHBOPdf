@@ -124,5 +124,6 @@ QSqlQuery* Poliza::getQuery(QSqlDatabase &database)
     query->bindValue(":nroPoliza", _nroPoliza);
     query->bindValue(":objeto", _objeto);
     query->bindValue(":asegurado", _asegurado->id());
+    query->bindValue(":monto", _monto);
     return query;
 }

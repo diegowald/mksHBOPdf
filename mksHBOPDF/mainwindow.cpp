@@ -76,5 +76,8 @@ void MainWindow::llenarPolizas()
 void MainWindow::on_btnPolizas_released()
 {
     DlgPolizas dlg(this);
-    dlg.exec();
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        llenarPolizas();
+    }
 }

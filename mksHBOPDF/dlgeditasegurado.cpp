@@ -12,6 +12,7 @@ DlgEditAsegurado::DlgEditAsegurado(AseguradoPtr asegurado, QWidget *parent) :
     _asegurado = asegurado;
     ui->spinPorcentaje->setMinimum(0.);
     ui->spinPorcentaje->setMaximum(100.);
+    llenarControles();
 }
 
 DlgEditAsegurado::~DlgEditAsegurado()
