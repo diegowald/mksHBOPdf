@@ -57,10 +57,10 @@ QString TagValue::applyOnTemplate(const QString templateText)
         foreach (QString key, _subValues.keys())
         {
             TagValuePtr subTag = _subValues[key];
-            if (subTag->tagDefinition()->isMultiple())
+            /*if (subTag->tagDefinition()->isMultiple())
             {
                 QString
-            }
+            }*/
             resultado = _subValues[key]->applyOnTemplate(resultado);
         }
     }

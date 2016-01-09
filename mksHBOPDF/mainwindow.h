@@ -19,11 +19,14 @@ public:
 private:
     void defineTags();
     void llenarArbol(DocumentParser &doc);
+    void llenarPolizas();
 
 private slots:
     void on_btnSeleccionarPDF_clicked();
 
     void on_btnProcesar_released();
+
+    void on_btnPolizas_released();
 
 private:
     Ui::MainWindow *ui;

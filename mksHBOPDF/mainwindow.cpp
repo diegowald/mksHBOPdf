@@ -4,16 +4,21 @@
 #include <QProcess>
 #include <QDebug>
 #include "documentparser.h"
+#include "dbhandler.h"
+#include "dlgpolizas.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    dbHandler::initialize();
+    llenarPolizas();
 }
 
 MainWindow::~MainWindow()
 {
+    dbHandler::finalize();
     delete ui;
 }
 
@@ -55,4 +60,21 @@ void MainWindow::defineTags()
 void MainWindow::llenarArbol(DocumentParser &doc)
 {
     doc.llenarArbol(ui->treeWidget);
+}
+
+
+void MainWindow::llenarPolizas()
+{
+    ui->cboPolizas->clear();
+    QList<PolizaPtr> polizas = dbHandler::instance()->getPolizas();
+    foreach (PolizaPtr poliza, polizas)
+    {
+        ui->cboPolizas->addItem(poliza->denominacionPoliza(), poliza->id());
+    }
+}
+
+void MainWindow::on_btnPolizas_released()
+{
+    DlgPolizas dlg(this);
+    dlg.exec();
 }
