@@ -26,7 +26,10 @@ SOURCES += main.cpp\
     dlgpolizas.cpp \
     dlgeditpoliza.cpp \
     dlgasegurados.cpp \
-    dlgeditasegurado.cpp
+    dlgeditasegurado.cpp \
+    suplemento.cpp \
+    documenttemplate.cpp \
+    templatedoc.cpp
 
 HEADERS  += mainwindow.h \
     documentparser.h \
@@ -38,7 +41,10 @@ HEADERS  += mainwindow.h \
     dlgpolizas.h \
     dlgeditpoliza.h \
     dlgasegurados.h \
-    dlgeditasegurado.h
+    dlgeditasegurado.h \
+    suplemento.h \
+    documenttemplate.h \
+    templatedoc.h
 
 FORMS    += mainwindow.ui \
     dlgpolizas.ui \

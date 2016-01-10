@@ -20,6 +20,7 @@ private:
     void defineTags();
     void llenarArbol(DocumentParser &doc);
     void llenarPolizas();
+    void llenarTemplates();
 
 private slots:
     void on_btnSeleccionarPDF_clicked();

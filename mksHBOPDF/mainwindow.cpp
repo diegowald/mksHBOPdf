@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     dbHandler::initialize();
     llenarPolizas();
+    llenarTemplates();
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +39,7 @@ void MainWindow::on_btnProcesar_released()
     DocumentParser doc(_fileContents, this);
     doc.parse();
     llenarArbol(doc);
-    QFile file("./template.html");
+    QFile file(ui->cboTemplate->currentData().toString());
     file.open(QIODevice::ReadOnly);
     QTextStream s(&file);
     QString txt(s.readAll());
@@ -79,5 +80,16 @@ void MainWindow::on_btnPolizas_released()
     if (dlg.exec() == QDialog::Accepted)
     {
         llenarPolizas();
+    }
+}
+
+
+void MainWindow::llenarTemplates()
+{
+    ui->cboTemplate->clear();
+    QList<TemplateDocPtr> templates = dbHandler::instance()->getTemplates();
+    foreach (TemplateDocPtr temp, templates)
+    {
+        ui->cboTemplate->addItem(temp->filename(), temp->filePath());
     }
 }

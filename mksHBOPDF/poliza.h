@@ -6,6 +6,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QDate>
+#include "suplemento.h"
 
 class Poliza : public QObject
 {

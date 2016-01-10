@@ -4,6 +4,8 @@
 #include <QObject>
 #include "asegurado.h"
 #include "poliza.h"
+#include "suplemento.h"
+#include "templatedoc.h"
 #include <QSqlDatabase>
 
 class dbHandler : public QObject
@@ -25,6 +27,12 @@ public:
     QList<AseguradoPtr> getAsegurados();
     AseguradoPtr getAsegurado(int id);
     bool saveAsegurado(AseguradoPtr asegurado);
+
+    QList<SuplementoPtr> getSuplementos(PolizaPtr poliza);
+    SuplementoPtr getSuplemento(int id);
+    bool saveSuplemento(SuplementoPtr suplemento);
+
+    QList<TemplateDocPtr> getTemplates();
 
 private:
     bool connectToDatabase();
