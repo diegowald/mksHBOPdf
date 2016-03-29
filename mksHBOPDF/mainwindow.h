@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "documentparser.h"
+#include "templateprocessor.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -28,11 +30,14 @@ private slots:
     void on_btnProcesar_released();
 
     void on_btnPolizas_released();
+private:
+    TemplateProcessorPtr crearTemplateProcessor(const QString &filename);
 
 private:
     Ui::MainWindow *ui;
     QString _filename;
     QString _fileContents;
 };
+
 
 #endif // MAINWINDOW_H

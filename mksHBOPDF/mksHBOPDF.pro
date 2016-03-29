@@ -15,8 +15,22 @@ TEMPLATE = app
 CONFIG += c++11
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
+SOURCES += \
+    ../3rdParty/quazip-code/quazip/quazip/qioapi.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/JlCompress.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quaadler32.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quacrc32.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quagzipfile.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quaziodevice.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quazip.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quazipdir.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quazipfile.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.cpp \
+    ../3rdParty/quazip-code/quazip/quazip/unzip.c \
+    ../3rdParty/quazip-code/quazip/quazip/zip.c \
+    main.cpp\
+    mainwindow.cpp \
     documentparser.cpp \
     tag.cpp \
     tagvalue.cpp \
@@ -29,9 +43,29 @@ SOURCES += main.cpp\
     dlgeditasegurado.cpp \
     suplemento.cpp \
     documenttemplate.cpp \
-    templatedoc.cpp
+    templatedoc.cpp \
+    templateprocessor.cpp \
+    htmltemmplateprocessor.cpp \
+    docxtemplateprocessor.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
+    ../3rdParty/quazip-code/quazip/quazip/crypt.h \
+    ../3rdParty/quazip-code/quazip/quazip/ioapi.h \
+    ../3rdParty/quazip-code/quazip/quazip/JlCompress.h \
+    ../3rdParty/quazip-code/quazip/quazip/quaadler32.h \
+    ../3rdParty/quazip-code/quazip/quazip/quachecksum32.h \
+    ../3rdParty/quazip-code/quazip/quazip/quacrc32.h \
+    ../3rdParty/quazip-code/quazip/quazip/quagzipfile.h \
+    ../3rdParty/quazip-code/quazip/quazip/quaziodevice.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazipdir.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazipfile.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazip_global.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazip.h \
+    ../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.h \
+    ../3rdParty/quazip-code/quazip/quazip/unzip.h \
+    ../3rdParty/quazip-code/quazip/quazip/zip.h \
+    mainwindow.h \
     documentparser.h \
     tag.h \
     tagvalue.h \
@@ -44,10 +78,22 @@ HEADERS  += mainwindow.h \
     dlgeditasegurado.h \
     suplemento.h \
     documenttemplate.h \
-    templatedoc.h
+    templatedoc.h \
+    templateprocessor.h \
+    htmltemmplateprocessor.h \
+    docxtemplateprocessor.h
 
 FORMS    += mainwindow.ui \
     dlgpolizas.ui \
     dlgeditpoliza.ui \
     dlgasegurados.ui \
     dlgeditasegurado.ui
+
+!win32: LIBS += -lz
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/release/ -lquazip
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/debug/ -lquazip
+#else:unix: LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/ -lquazip
+
+#INCLUDEPATH += $$PWD/../../mksHBOPdf/3rdParty/quazip-code/quazip/quazip
+#DEPENDPATH += $$PWD/../../mksHBOPdf/3rdParty/quazip-code/quazip/quazip

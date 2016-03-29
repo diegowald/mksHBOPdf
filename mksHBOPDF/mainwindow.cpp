@@ -6,6 +6,8 @@
 #include "documentparser.h"
 #include "dbhandler.h"
 #include "dlgpolizas.h"
+#include "htmltemmplateprocessor.h"
+#include "docxtemplateprocessor.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,19 +40,19 @@ void MainWindow::on_btnProcesar_released()
 {
     DocumentParser doc(_fileContents, this);
     doc.parse();
+    doc.addDatosPoliza();
     llenarArbol(doc);
-    QFile file(ui->cboTemplate->currentData().toString());
-    file.open(QIODevice::ReadOnly);
-    QTextStream s(&file);
-    QString txt(s.readAll());
-    QString result = doc.applyOnTemplate(txt);
-    ui->textBrowser_2->setHtml(result);
 
-    QFile file2("./resultado.html");
-    file2.open(QIODevice::WriteOnly);
-    QTextStream s2(&file2);
-    s2 << result;
-    file2.close();
+    QString fileResult = "./result.docx";
+
+    TemplateProcessorPtr templateProc = crearTemplateProcessor(ui->cboTemplate->currentData().toString());
+    templateProc->open();
+    QString txt = templateProc->text();
+    QString result = doc.applyOnTemplate(txt);
+    templateProc->applyResult(result);
+    templateProc->save(fileResult);
+
+    ui->textBrowser_2->setHtml(result);
 }
 
 void MainWindow::defineTags()
@@ -92,4 +94,18 @@ void MainWindow::llenarTemplates()
     {
         ui->cboTemplate->addItem(temp->filename(), temp->filePath());
     }
+}
+
+TemplateProcessorPtr MainWindow::crearTemplateProcessor(const QString &filename)
+{
+    QString upperFilename = filename.toUpper();
+    if (upperFilename.endsWith(".HTML"))
+    {
+        return HTMLTemmplateProcessorPtr::create(filename);
+    }
+    else if (upperFilename.endsWith(".DOCX"))
+    {
+        return DOCXTemplateProcessorPtr::create(filename);
+    }
+    return TemplateProcessorPtr();
 }
