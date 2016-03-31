@@ -117,12 +117,13 @@ bool DOCXTemplateProcessor::extract(const QString &filePath, const QString &extD
 
 QByteArray DOCXTemplateProcessor::fileContents(const QString &filePath, const QString &singleFileName)
 {
+    QByteArray res;
     QuaZip zip(filePath);
     zip.setFileNameCodec("IBM866");
 
     if (!zip.open(QuaZip::mdUnzip)) {
         qWarning("testRead(): zip.open(): %d", zip.getZipError());
-        return false;
+        return res;
     }
 
     zip.setFileNameCodec("IBM866");
@@ -139,7 +140,7 @@ QByteArray DOCXTemplateProcessor::fileContents(const QString &filePath, const QS
     for (bool more = zip.goToFirstFile(); more; more = zip.goToNextFile()) {
         if (!zip.getCurrentFileInfo(&info)) {
             qWarning("testRead(): getCurrentFileInfo(): %d\n", zip.getZipError());
-            return false;
+            return res;
         }
         qDebug() << info.name;
 
@@ -149,12 +150,12 @@ QByteArray DOCXTemplateProcessor::fileContents(const QString &filePath, const QS
 
         if (!file.open(QIODevice::ReadOnly)) {
             qWarning("testRead(): file.open(): %d", file.getZipError());
-            return false;
+            return res;
         }
 
         if (file.getZipError() != UNZ_OK) {
             qWarning("testRead(): file.getFileName(): %d", file.getZipError());
-            return false;
+            return res;
         }
 
         // Slow like hell (on GNU/Linux at least), but it is not my fault.
@@ -168,19 +169,19 @@ QByteArray DOCXTemplateProcessor::fileContents(const QString &filePath, const QS
 
         if (file.getZipError() != UNZ_OK) {
             qWarning("testRead(): file.getFileName(): %d", file.getZipError());
-            return false;
+            return res;
         }
 
         if (!file.atEnd()) {
             qWarning("testRead(): read all but not EOF");
-            return false;
+            return res;
         }
 
         file.close();
 
         if (file.getZipError() != UNZ_OK) {
             qWarning("testRead(): file.close(): %d", file.getZipError());
-            return false;
+            return res;
         }
     }
 
@@ -188,7 +189,7 @@ QByteArray DOCXTemplateProcessor::fileContents(const QString &filePath, const QS
 
     if (zip.getZipError() != UNZ_OK) {
         qWarning("testRead(): zip.close(): %d", zip.getZipError());
-        return false;
+        return res;
     }
 
     return contents;
@@ -297,6 +298,7 @@ bool DOCXTemplateProcessor::saveFromMemory(const QString &filePath)
 //            qWarning((QString("testCreate(): outFile.open(): %1").arg(outFile.getZipError())).toStdString());
             return false;
         }
+
         QByteArray contents = (fname != "word/document.xml") ? _uncompressed[fname] : _new.toUtf8();
         for (int i = 0; i < contents.length(); ++i)
         {

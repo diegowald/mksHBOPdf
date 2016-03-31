@@ -19,13 +19,17 @@ public:
 
     PolizaPtr poliza() const;
     int id() const;
+    int nroSuplemento() const;
     QString pdf() const;
+
     QString templateDoc() const;
     double monto() const;
 
     void setPDF(const QString &value);
     void setTemplateDoc(const QString &value);
     void setMonto(double value);
+
+
 
     QSqlQuery* getQuery(QSqlDatabase &database);
 
@@ -36,6 +40,7 @@ public slots:
 private:
     PolizaPtr _poliza;
     int _id;
+    int _nroSuplemento;
     QString _pdf;
     QString _templateDoc;
     double _monto;

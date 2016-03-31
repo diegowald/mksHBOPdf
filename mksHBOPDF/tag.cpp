@@ -10,6 +10,7 @@ Tag::Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, 
     _rowCount = 0;
     _removeLeft = removeLeft;
     _removeRight = removeRight;
+    _isConstant = false;
 }
 
 Tag::Tag(const QString &tagName, bool isMultiple, int rowcount)
@@ -17,6 +18,16 @@ Tag::Tag(const QString &tagName, bool isMultiple, int rowcount)
     _tagName = tagName;
     _isMultiple = isMultiple;
     _rowCount = rowcount;
+    _isConstant = false;
+}
+
+Tag::Tag(const QString &tagName, Calculation calculation, QObject *parent) : QObject(parent)
+{
+    _tagName = tagName;
+    _isMultiple = false;
+    _rowCount = 0;
+    _isConstant = true;
+    _calculation = calculation;
 }
 
 QString Tag::tagName() const
@@ -49,42 +60,51 @@ QList<TagValuePtr> Tag::extractValue(const QString &source)
 {
     qDebug() << "Tratando de obtener " << _tagName << ", isMultiple: " << (_isMultiple ? "SI" : "NO");
     QList<TagValuePtr> result;
-
-    QPair<QString, int> valor;
-    int fromPosition = 0;
-
-    int currentIndex = 0;
-    while (fromPosition != -1)
+    if (!_isConstant)
     {
-        if (_rowCount == 0)
-            valor = extractValueUsingDelimiters(source, fromPosition);
-        else
-            valor = extractValueUsingRows(source, fromPosition);
 
-        qDebug() << _tagName << ": " << valor.first;
-        TagValuePtr res = TagValuePtr::create(sharedFromThis(), _isMultiple ? currentIndex : -1,
-                    /*
-                    _isMultiple ? QString("%1:%2").arg(_tagName).arg(currentIndex) : _tagName, */valor.first, valor.second);
-        result.append(res);
+        QPair<QString, int> valor;
+        int fromPosition = 0;
 
-        if ((valor.second > -1) && isComplex())
+        int currentIndex = 0;
+        while (fromPosition != -1)
         {
-            foreach (QString key, _subtags.keys())
-            {
-                TagPtr tag = _subtags[key];
-                qDebug() << key << ", " << tag->tagName();
-                QList<TagValuePtr> subValues = tag->extractValue(valor.first);
+            if (_rowCount == 0)
+                valor = extractValueUsingDelimiters(source, fromPosition);
+            else
+                valor = extractValueUsingRows(source, fromPosition);
 
-                foreach (TagValuePtr tv, subValues)
+            qDebug() << _tagName << ": " << valor.first;
+            TagValuePtr res = TagValuePtr::create(sharedFromThis(), _isMultiple ? currentIndex : -1,
+                                                  /*
+                                                          _isMultiple ? QString("%1:%2").arg(_tagName).arg(currentIndex) : _tagName, */valor.first, valor.second);
+            result.append(res);
+
+            if ((valor.second > -1) && isComplex())
+            {
+                foreach (QString key, _subtags.keys())
                 {
-                    res->addSubValue(tv);
+                    TagPtr tag = _subtags[key];
+                    qDebug() << key << ", " << tag->tagName();
+                    QList<TagValuePtr> subValues = tag->extractValue(valor.first);
+
+                    foreach (TagValuePtr tv, subValues)
+                    {
+                        res->addSubValue(tv);
+                    }
                 }
             }
+            fromPosition = _isMultiple ? valor.second + valor.first.length(): -1;
+            if (_isMultiple)
+                currentIndex++;
         }
-        fromPosition = _isMultiple ? valor.second + valor.first.length(): -1;
-        if (_isMultiple)
-            currentIndex++;
     }
+    else
+    {
+        TagValuePtr res = TagValuePtr::create(sharedFromThis(), _calculation);
+        result.append(res);
+    }
+
     return result;
 }
 

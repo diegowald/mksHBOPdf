@@ -7,8 +7,9 @@
 #include <QSqlQuery>
 #include <QDate>
 #include "suplemento.h"
+#include <QEnableSharedFromThis>
 
-class Poliza : public QObject
+class Poliza : public QObject, public QEnableSharedFromThis<Poliza>
 {
     Q_OBJECT
 public:
@@ -25,6 +26,8 @@ public:
     double monto() const;
     double montoDisponible() const;
     QList<SuplementoPtr> suplementos();
+    SuplementoPtr crearSuplemento();
+    QString tomador() const;
 
     void setVigenciaDesde (const QDate &value);
     void setVigenciaHasta (const QDate &value);
@@ -33,8 +36,10 @@ public:
     void setObjeto (const QString &value);
     void setAsegurado(AseguradoPtr value);
     void setMonto(double value);
+    void setTomador(const QString &value);
 
     QSqlQuery* getQuery(QSqlDatabase &database);
+    int nuevoNroSuplemento() const;
 
 signals:
 
@@ -49,6 +54,8 @@ private:
     QString _objeto;
     AseguradoPtr _asegurado;
     double _monto;
+    QString _tomador;
+    QList<SuplementoPtr> _suplementos;
 };
 
 typedef QSharedPointer<Poliza> PolizaPtr;

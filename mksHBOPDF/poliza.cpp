@@ -12,6 +12,7 @@ Poliza::Poliza(QObject *parent) : QObject(parent)
     _objeto = "";
     _asegurado.clear();
     _monto = 0.;
+    _tomador = "";
 }
 
 Poliza::Poliza(QSqlRecord record) : QObject()
@@ -22,8 +23,9 @@ Poliza::Poliza(QSqlRecord record) : QObject()
     _denominacionPoliza = record.value(record.indexOf("denominacionPoliza")).toString();
     _nroPoliza = record.value(record.indexOf("nroPoliza")).toInt();
     _objeto = record.value(record.indexOf("objeto")).toString();
-    _asegurado = dbHandler::instance()->getAsegurado(record.value(record.indexOf("idAsegurado")).toInt());
+    _asegurado = dbHandler::instance()->getAsegurado(record.value(record.indexOf("asegurado")).toInt());
     _monto = record.value(record.indexOf("monto")).toDouble();
+    _tomador = record.value(record.indexOf("tomador")).toString();
 }
 
 int Poliza::id() const
@@ -108,13 +110,13 @@ QSqlQuery* Poliza::getQuery(QSqlDatabase &database)
 
     if (_id == -1)
     {
-        query->prepare("INSERT INTO polizas (vigenciaDesde, vigenciaHasta, denominacionPoliza, nroPoliza, objeto, asegurado, monto) "
-                       " VALUES (:vigenciaDesde, :vigenciaHasta, :denominacionPoliza, :nroPoliza, :objeto, :asegurado, :monto);");
+        query->prepare("INSERT INTO polizas (vigenciaDesde, vigenciaHasta, denominacionPoliza, nroPoliza, objeto, asegurado, monto, tomador) "
+                       " VALUES (:vigenciaDesde, :vigenciaHasta, :denominacionPoliza, :nroPoliza, :objeto, :asegurado, :monto, :tomador);");
     }
     else
     {
         query->prepare("UPDATE polizas SET vigenciaDesde = :vigenciaDesde, vigenciaHasta = :vigenciaHasta, denominacionPoliza = :denominacionPoliza, "
-                       " nroPoliza = :nroPoliza, objeto = :objeto, asegurado = :asegurado, monto = :monto "
+                       " nroPoliza = :nroPoliza, objeto = :objeto, asegurado = :asegurado, monto = :monto, tomador = :tomador "
                        " WHERE id = :id;");
         query->bindValue(":id", _id);
     }
@@ -125,5 +127,33 @@ QSqlQuery* Poliza::getQuery(QSqlDatabase &database)
     query->bindValue(":objeto", _objeto);
     query->bindValue(":asegurado", _asegurado->id());
     query->bindValue(":monto", _monto);
+    query->bindValue(":tomador", _tomador);
     return query;
+}
+
+SuplementoPtr Poliza::crearSuplemento()
+{
+    SuplementoPtr s = SuplementoPtr::create(sharedFromThis());
+    _suplementos.append(s);
+    return s;
+}
+
+int Poliza::nuevoNroSuplemento() const
+{
+    int maxSupl = -1;
+    foreach (SuplementoPtr s, _suplementos)
+    {
+        maxSupl = s->nroSuplemento() > maxSupl ? s->nroSuplemento(): maxSupl;
+    }
+    return (maxSupl == -1) ? 1 : maxSupl +1;
+}
+
+QString Poliza::tomador() const
+{
+    return _tomador;
+}
+
+void Poliza::setTomador(const QString &value)
+{
+    _tomador = value;
 }

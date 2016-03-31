@@ -8,6 +8,7 @@ Suplemento::Suplemento(PolizaPtr poliza) : QObject()
 {
     _poliza = poliza;
     _id = -1;
+    _nroSuplemento = poliza->nuevoNroSuplemento();
     _pdf = "";
     _templateDoc = "";
     _monto = 0.;
@@ -20,6 +21,7 @@ Suplemento::Suplemento(QSqlRecord record)
     _pdf = record.value(record.indexOf("pdf")).toString();
     _templateDoc = record.value(record.indexOf("templateDoc")).toString();
     _monto = record.value(record.indexOf("monto")).toDouble();
+    _nroSuplemento = record.value(record.indexOf("nroSuplemento")).toInt();
 }
 
 
@@ -70,12 +72,12 @@ QSqlQuery* Suplemento::getQuery(QSqlDatabase &database)
 
     if (_id == -1)
     {
-        query->prepare("INSERT INTO suplementos (idPoliza, pdf, templateDoc, monto) "
-                       " VALUES (:idPoliza, :pdf, :templateDoc, :monto);");
+        query->prepare("INSERT INTO suplementos (idPoliza, pdf, templateDoc, monto, nroSuplemento) "
+                       " VALUES (:idPoliza, :pdf, :templateDoc, :monto, :nroSuplemento);");
     }
     else
     {
-        query->prepare("UPDATE suplementos SET idPoliza = :idPoliza, pdf = :pdf, templateDoc = :templateDoc, monto = :monto"
+        query->prepare("UPDATE suplementos SET idPoliza = :idPoliza, pdf = :pdf, templateDoc = :templateDoc, monto = :monto, nroSuplemento = :nroSuplemento "
                        " WHERE id = :id;");
         query->bindValue(":id", _id);
     }
@@ -84,5 +86,11 @@ QSqlQuery* Suplemento::getQuery(QSqlDatabase &database)
     query->bindValue(":pdf", _pdf);
     query->bindValue(":templateDoc", _templateDoc);
     query->bindValue(":monto", _monto);
+    query->bindValue(":nroSuplemento", _nroSuplemento);
     return query;
+}
+
+int Suplemento::nroSuplemento() const
+{
+    return _nroSuplemento;
 }

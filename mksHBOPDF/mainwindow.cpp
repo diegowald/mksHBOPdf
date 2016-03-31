@@ -38,9 +38,9 @@ void MainWindow::on_btnSeleccionarPDF_clicked()
 
 void MainWindow::on_btnProcesar_released()
 {
-    DocumentParser doc(_fileContents, this);
+    DocumentParser doc(ui->cboPolizas->currentData(Qt::UserRole).toInt(), _fileContents, this);
     doc.parse();
-    doc.addDatosPoliza();
+    //doc.addDatosPoliza();
     llenarArbol(doc);
 
     QString fileResult = "./result.docx";
@@ -51,8 +51,6 @@ void MainWindow::on_btnProcesar_released()
     QString result = doc.applyOnTemplate(txt);
     templateProc->applyResult(result);
     templateProc->save(fileResult);
-
-    ui->textBrowser_2->setHtml(result);
 }
 
 void MainWindow::defineTags()

@@ -1,9 +1,13 @@
 #include "documentparser.h"
 #include <QSharedPointer>
+#include "dbhandler.h"
+#include "suplemento.h"
+#include <QDebug>
 
-DocumentParser::DocumentParser(const QString &documentContents, QObject *parent) : QObject(parent)
+DocumentParser::DocumentParser(int idPoliza, const QString &documentContents, QObject *parent) : QObject(parent)
 {
     _source = documentContents;
+    _idPoliza = idPoliza;
     defineTagDefinitions();
 }
 
@@ -51,22 +55,64 @@ TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagN
     return tag;
 }
 
+TagPtr DocumentParser::createTagDefinition(TagPtr parentTag, const QString &tagName, Calculation calculation)
+{
+    TagPtr tag = TagPtr::create(tagName, calculation);
+    parentTag->addSubTag(tag);
+    return tag;
+}
+
 void DocumentParser::defineTagDefinitions()
 {
     TagPtr root = createTagDefinition("definition", false, "", "@@END@@");
+    createTagDefinition(root, "NroPoliza", [&] () -> QString
+    {
+                            return QString::number(nroPoliza());
+                        });
+
+    createTagDefinition(root, "NroSuplemento", [&] () -> QString
+    {
+                            return QString::number(nroSuplemento());
+                        });
+
+    createTagDefinition(root, "Tomador", [&] () -> QString
+    {
+                            return tomador();
+                        });
+
+    createTagDefinition(root, "ObjetoPoliza", [&] () -> QString
+    {
+                            return objetoPoliza();
+                        });
+
+    createTagDefinition(root, "MontoContingente", [&] () -> QString
+    {
+                            return QString::number(montoContingente());
+                        });
+
+    createTagDefinition(root, "MontoPasajero", [&] () -> QString
+    {
+                            return QString::number(montoPasajero());
+                        });
+
+    createTagDefinition(root, "SumaAsegurada", [&] () -> QString
+    {
+                            return QString::number(sumaAsegurada());
+                        });
+
     createTagDefinition(root, "contrato", false, "CONTRATO DE PRESTACIÓN DE SERVICIOS TURISTICOS Nº ", "\n");
     createTagDefinition(root, "codigoSeguridad", false, "CÓDIGO DE SEGURIDAD:", "\n");
     createTagDefinition(root, "lugar", false, "Lugar:", "\n");
     createTagDefinition(root, "fecha", false, "Fecha:", "\n");
 
     TagPtr tag = createTagDefinition(root, "establecimiento", false, "Establecimiento Educativo: ", "\n");
-    createTagDefinition(tag, "grado", false, "División/Grado: ", "\n");
-    createTagDefinition(tag, "cantPasajeros", false, "Cant. estimada de pax: ", "\n");
-    createTagDefinition(tag, "turno", false, "Turno: ", "\n");
-    createTagDefinition(tag, "codPostal", false, "Cod. Post.: ", "\n");
-    createTagDefinition(tag, "domicilio", false, "Domicilio: ", "\n");
-    createTagDefinition(tag, "localidad", false, "Localidad: ", "\n");
-    createTagDefinition(tag, "provincia", false, "Provincia: ", "\n");
+    createTagDefinition(root, "grado", false, "División/Grado: ", "\n");
+    createTagDefinition(root, "cantPasajeros", false, "Cant. estimada de pax: ", "\n");
+    createTagDefinition(root, "turno", false, "Turno: ", "\n");
+    createTagDefinition(root, "codPostal", false, "Cod. Post.: ", "\n");
+    createTagDefinition(root, "domicilio", false, "Domicilio: ", "\n");
+    createTagDefinition(root, "localidad", false, "Localidad: ", "\n");
+    createTagDefinition(root, "provincia", false, "Provincia: ", "\n");
 
     tag = createTagDefinition(root, "representantes", false, "Representantes del Contingente:", "Servicios a Prestar por la empresa:");
     createTagDefinition(tag, "nombre", false, "Apellido y Nombres:", "\n");
@@ -151,4 +197,51 @@ QString DocumentParser::applyOnTemplate(const QString &templateTxt)
         }
     }
     return resultado;
+}
+
+
+int DocumentParser::nroSuplemento()
+{
+    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
+    return p->crearSuplemento()->nroSuplemento();
+}
+
+int DocumentParser::nroPoliza()
+{
+    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
+    return p->nroPoliza();
+}
+
+QString DocumentParser::tomador()
+{
+    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
+    return p->tomador();
+}
+
+QString DocumentParser::objetoPoliza()
+{
+    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
+    return p->objeto();
+}
+
+double DocumentParser::montoContingente()
+{
+    TagValuePtr tv = _tagValues["definition"].at(0)->subValue("precioPorContingente");
+    QString v = tv->value();
+    return v.toDouble();
+}
+
+double DocumentParser::montoPasajero()
+{
+    TagValuePtr tv = _tagValues["definition"].at(0)->subValue("precioPromedioPorPasajero");
+    QString v = tv->value();
+    return v.toDouble();
+}
+
+double DocumentParser::sumaAsegurada()
+{
+    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
+    double pct = p->asegurado()->porcentaje();
+    double valor = montoContingente() * pct / 100;
+    return valor;
 }

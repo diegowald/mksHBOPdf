@@ -6,10 +6,13 @@
 #include <QSharedPointer>
 #include "tagvalue.h"
 #include <QEnableSharedFromThis>
+#include <functional>
 
 class Tag;
 
 typedef QSharedPointer<Tag> TagPtr;
+
+typedef std::function<QString ()> Calculation;
 
 class Tag : public QObject, public QEnableSharedFromThis<Tag>
 {
@@ -17,6 +20,7 @@ class Tag : public QObject, public QEnableSharedFromThis<Tag>
 public:
     explicit Tag(const QString &tagName, bool isMultiple, const QString &leftDelimiter, const QString &rightDelimiter, bool removeLeft, bool removeRight, QObject *parent = 0);
     explicit Tag(const QString &tagName, bool isMultiple, int rowcount);
+    explicit Tag(const QString &tagName, Calculation calculation, QObject *parent = 0);
 
     QString tagName() const;
     QString leftDelimiter() const;
@@ -48,6 +52,8 @@ private:
     QMap<QString, TagPtr> _subtags;
     bool _removeLeft;
     bool _removeRight;
+    bool _isConstant;
+    Calculation _calculation;
 };
 
 
