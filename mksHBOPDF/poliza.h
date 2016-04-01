@@ -41,7 +41,7 @@ public:
     void setTomador(const QString &value);
 
     QSqlQuery* getQuery(QSqlDatabase &database);
-    int nuevoNroSuplemento() const;
+    int nuevoNroSuplemento();
 
 signals:
 

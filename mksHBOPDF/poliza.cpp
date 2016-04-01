@@ -162,10 +162,10 @@ SuplementoPtr Poliza::suplementoNuevo() const
     return _suplementoNuevo;
 }
 
-int Poliza::nuevoNroSuplemento() const
+int Poliza::nuevoNroSuplemento()
 {
     int maxSupl = -1;
-    foreach (SuplementoPtr s, _suplementos)
+    foreach (SuplementoPtr s, suplementos())
     {
         maxSupl = s->nroSuplemento() > maxSupl ? s->nroSuplemento(): maxSupl;
     }

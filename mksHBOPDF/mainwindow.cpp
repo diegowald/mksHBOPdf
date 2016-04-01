@@ -8,6 +8,7 @@
 #include "dlgpolizas.h"
 #include "htmltemmplateprocessor.h"
 #include "docxtemplateprocessor.h"
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,15 +45,23 @@ void MainWindow::on_btnProcesar_released()
     //doc.addDatosPoliza();
     llenarArbol(doc);
 
-    QString fileResult = "./result.docx";
 
     TemplateProcessorPtr templateProc = crearTemplateProcessor(ui->cboTemplate->currentData().toString());
     templateProc->open();
     QString txt = templateProc->text();
     QString result = doc.applyOnTemplate(txt);
     templateProc->applyResult(result);
+
+    QString fileResult = "./%1-%2.%3";
+    fileResult = fileResult.arg(doc.nroPoliza()).arg(doc.nroSuplemento()).arg("docx");
+
     templateProc->save(fileResult);
     dbHandler::instance()->saveSuplemento(poliza->suplementoNuevo());
+
+    QFileInfo fi(fileResult);
+    bool r = QDesktopServices::openUrl(QUrl(fi.absoluteFilePath()));
+
+    qDebug() << r;
 }
 
 void MainWindow::defineTags()

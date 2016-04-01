@@ -28,6 +28,8 @@ private:
     TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, bool isMultiple, int rowcount);
     TagPtr createTagDefinition(TagPtr parentTag, const QString &tagName, Calculation calculation);
 
+public:
+
     int nroSuplemento();
     int nroPoliza();
     QString tomador();
