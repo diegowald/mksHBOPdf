@@ -24,9 +24,11 @@ public:
     QString objeto() const;
     AseguradoPtr asegurado() const;
     double monto() const;
-    double montoDisponible() const;
+    double montoDisponible();
+    double montoGastado();
     QList<SuplementoPtr> suplementos();
     SuplementoPtr crearSuplemento();
+    SuplementoPtr suplementoNuevo() const;
     QString tomador() const;
 
     void setVigenciaDesde (const QDate &value);
@@ -56,6 +58,8 @@ private:
     double _monto;
     QString _tomador;
     QList<SuplementoPtr> _suplementos;
+    SuplementoPtr _suplementoNuevo;
+    bool _suplementosLoaded;
 };
 
 typedef QSharedPointer<Poliza> PolizaPtr;

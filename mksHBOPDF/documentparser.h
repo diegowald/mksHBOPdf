@@ -5,12 +5,13 @@
 #include <QObject>
 #include "tag.h"
 #include <QTreeWidget>
+#include "poliza.h"
 
 class DocumentParser : public QObject
 {
     Q_OBJECT
 public:
-    explicit DocumentParser(int idPoliza, const QString &documentContents, QObject *parent = 0);
+    explicit DocumentParser(PolizaPtr poliza, const QString &documentContents, QObject *parent = 0);
     bool parse();
 
     void llenarArbol(QTreeWidget *treeWidget);
@@ -43,7 +44,7 @@ private:
     QMap<QString, TagPtr> _tagDefinition;
     QMap<QString, QList<TagValuePtr>> _tagValues;
 
-    int _idPoliza;
+    PolizaPtr _poliza;
 };
 
 #endif // DOCUMENTPARSER_H

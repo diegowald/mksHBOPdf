@@ -13,6 +13,7 @@ Poliza::Poliza(QObject *parent) : QObject(parent)
     _asegurado.clear();
     _monto = 0.;
     _tomador = "";
+    _suplementosLoaded = false;
 }
 
 Poliza::Poliza(QSqlRecord record) : QObject()
@@ -26,6 +27,7 @@ Poliza::Poliza(QSqlRecord record) : QObject()
     _asegurado = dbHandler::instance()->getAsegurado(record.value(record.indexOf("asegurado")).toInt());
     _monto = record.value(record.indexOf("monto")).toDouble();
     _tomador = record.value(record.indexOf("tomador")).toString();
+    _suplementosLoaded = false;
 }
 
 int Poliza::id() const
@@ -67,6 +69,22 @@ AseguradoPtr Poliza::asegurado() const
 double Poliza::monto() const
 {
     return _monto;
+}
+
+double Poliza::montoGastado()
+{
+    double gastado = 0.;
+    QList<SuplementoPtr> supls = suplementos();
+    foreach (SuplementoPtr s, supls)
+    {
+        gastado += s->monto();
+    }
+    return gastado;
+}
+
+double Poliza::montoDisponible()
+{
+    return _monto - montoGastado();
 }
 
 void Poliza::setVigenciaDesde (const QDate &value)
@@ -135,7 +153,13 @@ SuplementoPtr Poliza::crearSuplemento()
 {
     SuplementoPtr s = SuplementoPtr::create(sharedFromThis());
     _suplementos.append(s);
+    _suplementoNuevo = s;
     return s;
+}
+
+SuplementoPtr Poliza::suplementoNuevo() const
+{
+    return _suplementoNuevo;
 }
 
 int Poliza::nuevoNroSuplemento() const
@@ -156,4 +180,15 @@ QString Poliza::tomador() const
 void Poliza::setTomador(const QString &value)
 {
     _tomador = value;
+}
+
+
+QList<SuplementoPtr> Poliza::suplementos()
+{
+    if (!_suplementosLoaded)
+    {
+        _suplementos = dbHandler::instance()->getSuplementos(sharedFromThis());
+        _suplementosLoaded = true;
+    }
+    return _suplementos;
 }

@@ -58,6 +58,8 @@ void DlgEditPoliza::llenarControles()
         ui->cboAsegurado->setCurrentIndex(ui->cboAsegurado->findData(_poliza->asegurado()->id()));
     }
     ui->txtMonto->setText(QString::number(_poliza->monto()));
+    ui->txtGastado->setText(QString::number(_poliza->montoGastado()));
+    ui->txtDisponible->setText(QString::number(_poliza->montoDisponible()));
 }
 
 void DlgEditPoliza::on_toolButton_released()

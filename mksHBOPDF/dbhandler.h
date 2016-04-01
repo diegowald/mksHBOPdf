@@ -29,7 +29,8 @@ public:
     bool saveAsegurado(AseguradoPtr asegurado);
 
     QList<SuplementoPtr> getSuplementos(PolizaPtr poliza);
-    SuplementoPtr getSuplemento(int id);
+    QList<SuplementoPtr> getSuplementos(int idPoliza);
+    SuplementoPtr getSuplemento(PolizaPtr poliza, int id);
     bool saveSuplemento(SuplementoPtr suplemento);
 
     QList<TemplateDocPtr> getTemplates();

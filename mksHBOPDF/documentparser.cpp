@@ -4,11 +4,12 @@
 #include "suplemento.h"
 #include <QDebug>
 
-DocumentParser::DocumentParser(int idPoliza, const QString &documentContents, QObject *parent) : QObject(parent)
+DocumentParser::DocumentParser(PolizaPtr poliza, const QString &documentContents, QObject *parent) : QObject(parent)
 {
     _source = documentContents;
-    _idPoliza = idPoliza;
+    _poliza = poliza;
     defineTagDefinitions();
+    poliza->crearSuplemento();
 }
 
 bool DocumentParser::parse()
@@ -202,26 +203,22 @@ QString DocumentParser::applyOnTemplate(const QString &templateTxt)
 
 int DocumentParser::nroSuplemento()
 {
-    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
-    return p->crearSuplemento()->nroSuplemento();
+    return _poliza->suplementoNuevo()->nroSuplemento();
 }
 
 int DocumentParser::nroPoliza()
 {
-    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
-    return p->nroPoliza();
+    return _poliza->nroPoliza();
 }
 
 QString DocumentParser::tomador()
 {
-    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
-    return p->tomador();
+    return _poliza->tomador();
 }
 
 QString DocumentParser::objetoPoliza()
 {
-    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
-    return p->objeto();
+    return _poliza->objeto();
 }
 
 double DocumentParser::montoContingente()
@@ -240,8 +237,8 @@ double DocumentParser::montoPasajero()
 
 double DocumentParser::sumaAsegurada()
 {
-    PolizaPtr p = dbHandler::instance()->getPoliza(_idPoliza);
-    double pct = p->asegurado()->porcentaje();
+    double pct = _poliza->asegurado()->porcentaje();
     double valor = montoContingente() * pct / 100;
+    _poliza->suplementoNuevo()->setMonto(valor);
     return valor;
 }

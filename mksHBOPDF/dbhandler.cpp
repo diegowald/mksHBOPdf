@@ -207,7 +207,7 @@ QList<SuplementoPtr> dbHandler::getSuplementos(PolizaPtr poliza)
     // cargo los registros.
     while (query.next())
     {
-        resultado.append(SuplementoPtr::create(query.record()));
+        resultado.append(SuplementoPtr::create(poliza, query.record()));
     }
     // cierro la base de datos
     _database.close();
@@ -215,7 +215,7 @@ QList<SuplementoPtr> dbHandler::getSuplementos(PolizaPtr poliza)
     return resultado;
 }
 
-SuplementoPtr dbHandler::getSuplemento(int id)
+SuplementoPtr dbHandler::getSuplemento(PolizaPtr poliza, int id)
 {
     SuplementoPtr resultado;
 
@@ -232,7 +232,7 @@ SuplementoPtr dbHandler::getSuplemento(int id)
     // cargo los registros.
     while (query.next())
     {
-        resultado = SuplementoPtr::create(query.record());
+        resultado = SuplementoPtr::create(poliza, query.record());
     }
     // cierro la base de datos
     _database.close();

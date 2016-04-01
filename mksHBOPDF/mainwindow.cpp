@@ -38,7 +38,8 @@ void MainWindow::on_btnSeleccionarPDF_clicked()
 
 void MainWindow::on_btnProcesar_released()
 {
-    DocumentParser doc(ui->cboPolizas->currentData(Qt::UserRole).toInt(), _fileContents, this);
+    PolizaPtr poliza = dbHandler::instance()->getPoliza(ui->cboPolizas->currentData(Qt::UserRole).toInt());
+    DocumentParser doc(poliza, _fileContents, this);
     doc.parse();
     //doc.addDatosPoliza();
     llenarArbol(doc);
@@ -51,6 +52,7 @@ void MainWindow::on_btnProcesar_released()
     QString result = doc.applyOnTemplate(txt);
     templateProc->applyResult(result);
     templateProc->save(fileResult);
+    dbHandler::instance()->saveSuplemento(poliza->suplementoNuevo());
 }
 
 void MainWindow::defineTags()

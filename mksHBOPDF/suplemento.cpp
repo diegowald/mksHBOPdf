@@ -14,10 +14,10 @@ Suplemento::Suplemento(PolizaPtr poliza) : QObject()
     _monto = 0.;
 }
 
-Suplemento::Suplemento(QSqlRecord record)
+Suplemento::Suplemento(PolizaPtr poliza, QSqlRecord record)
 {
     _id = record.value(record.indexOf("id")).toInt();
-    _poliza = dbHandler::instance()->getPoliza(record.value(record.indexOf("idPoliza")).toInt());
+    _poliza = poliza;
     _pdf = record.value(record.indexOf("pdf")).toString();
     _templateDoc = record.value(record.indexOf("templateDoc")).toString();
     _monto = record.value(record.indexOf("monto")).toDouble();

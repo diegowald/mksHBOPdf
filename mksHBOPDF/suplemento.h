@@ -15,7 +15,7 @@ class Suplemento : public QObject
     Q_OBJECT
 public:
     explicit Suplemento(PolizaPtr poliza);
-    explicit Suplemento(QSqlRecord record);
+    explicit Suplemento(PolizaPtr poliza, QSqlRecord record);
 
     PolizaPtr poliza() const;
     int id() const;
