@@ -30,7 +30,8 @@ void MainWindow::on_btnSeleccionarPDF_clicked()
 {
     _filename = QFileDialog::getOpenFileName(this, "Abrir PDF", "./", "pdf (*.pdf)");
     QProcess *process = new QProcess(this);
-    QString program = "/usr/bin/pdftotext";
+    //QString program = "/usr/bin/pdftotext";
+    QString program = "./pdftotext";
     process->start(program, QStringList() << _filename << "-");
     process->waitForFinished(30000);
     _fileContents = QString(process->readAllStandardOutput());

@@ -16,19 +16,19 @@ CONFIG += c++11
 
 
 SOURCES += \
-    ../3rdParty/quazip-code/quazip/quazip/qioapi.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/JlCompress.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quaadler32.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quacrc32.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quagzipfile.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quaziodevice.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quazip.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quazipdir.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quazipfile.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.cpp \
-    ../3rdParty/quazip-code/quazip/quazip/unzip.c \
-    ../3rdParty/quazip-code/quazip/quazip/zip.c \
+    #../3rdParty/quazip-code/quazip/quazip/qioapi.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/JlCompress.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quaadler32.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quacrc32.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quagzipfile.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quaziodevice.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quazip.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quazipdir.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quazipfile.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.cpp \
+    #../3rdParty/quazip-code/quazip/quazip/unzip.c \
+    #../3rdParty/quazip-code/quazip/quazip/zip.c \
     main.cpp\
     mainwindow.cpp \
     documentparser.cpp \
@@ -49,22 +49,22 @@ SOURCES += \
     docxtemplateprocessor.cpp
 
 HEADERS  += \
-    ../3rdParty/quazip-code/quazip/quazip/crypt.h \
-    ../3rdParty/quazip-code/quazip/quazip/ioapi.h \
-    ../3rdParty/quazip-code/quazip/quazip/JlCompress.h \
-    ../3rdParty/quazip-code/quazip/quazip/quaadler32.h \
-    ../3rdParty/quazip-code/quazip/quazip/quachecksum32.h \
-    ../3rdParty/quazip-code/quazip/quazip/quacrc32.h \
-    ../3rdParty/quazip-code/quazip/quazip/quagzipfile.h \
-    ../3rdParty/quazip-code/quazip/quazip/quaziodevice.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazipdir.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazipfile.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazip_global.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazip.h \
-    ../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.h \
-    ../3rdParty/quazip-code/quazip/quazip/unzip.h \
-    ../3rdParty/quazip-code/quazip/quazip/zip.h \
+    #../3rdParty/quazip-code/quazip/quazip/crypt.h \
+    #../3rdParty/quazip-code/quazip/quazip/ioapi.h \
+    #../3rdParty/quazip-code/quazip/quazip/JlCompress.h \
+    #../3rdParty/quazip-code/quazip/quazip/quaadler32.h \
+    #../3rdParty/quazip-code/quazip/quazip/quachecksum32.h \
+    #../3rdParty/quazip-code/quazip/quazip/quacrc32.h \
+    #../3rdParty/quazip-code/quazip/quazip/quagzipfile.h \
+    #../3rdParty/quazip-code/quazip/quazip/quaziodevice.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazipdir.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazipfile.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazipfileinfo.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazip_global.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazip.h \
+    #../3rdParty/quazip-code/quazip/quazip/quazipnewinfo.h \
+    #../3rdParty/quazip-code/quazip/quazip/unzip.h \
+    #../3rdParty/quazip-code/quazip/quazip/zip.h \
     mainwindow.h \
     documentparser.h \
     tag.h \
@@ -90,10 +90,21 @@ FORMS    += mainwindow.ui \
     dlgeditasegurado.ui
 
 !win32: LIBS += -lz
-
+win32: LIBS += -lz
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/release/ -lquazip
 #else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/debug/ -lquazip
 #else:unix: LIBS += -L$$PWD/../../mksHBOPdf-bin/quazip/quazip/ -lquazip
 
 #INCLUDEPATH += $$PWD/../../mksHBOPdf/3rdParty/quazip-code/quazip/quazip
 #DEPENDPATH += $$PWD/../../mksHBOPdf/3rdParty/quazip-code/quazip/quazip
+
+win32: INCLUDEPATH += C:/Qt/5.5/Src/qtbase/src/3rdparty/QtZlib
+win32: LIBS += -LC:/Qt/5.5/Src/qtbase/src/3rdparty/zlib -lz
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../3rdParty/quazip-code/build-quazip-Desktop_Qt_5_5_1_MinGW_32bit-Release/quazip/release/ -lquazip
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../3rdParty/quazip-code/build-quazip-Desktop_Qt_5_5_1_MinGW_32bit-Debug/quazip/debug/ -lquazipd
+else:unix: LIBS += -L$$PWD/../3rdParty/quazip-code/build-quazip-Desktop_Qt_5_5_1_MinGW_32bit-Debug/quazip/ -lquazipd
+
+INCLUDEPATH += $$PWD/../3rdParty/quazip-code/build-quazip-Desktop_Qt_5_5_1_MinGW_32bit-Debug/quazip/debug
+DEPENDPATH += $$PWD/../3rdParty/quazip-code/build-quazip-Desktop_Qt_5_5_1_MinGW_32bit-Debug/quazip/debug

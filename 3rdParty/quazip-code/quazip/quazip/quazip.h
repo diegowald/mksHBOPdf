@@ -41,6 +41,8 @@ quazip/(un)zip.h files for details, basically it's zlib license.
 #define UNZ_OPENERROR -1000
 #endif
 
+#define QUAZIP_STATIC
+
 class QuaZipPrivate;
 
 /// ZIP archive.
