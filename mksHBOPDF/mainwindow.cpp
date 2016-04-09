@@ -34,7 +34,7 @@ void MainWindow::on_btnSeleccionarPDF_clicked()
     QString program = "./pdftotext";
     process->start(program, QStringList() << _filename << "-");
     process->waitForFinished(30000);
-    _fileContents = QString(process->readAllStandardOutput());
+    _fileContents = QString::fromLatin1(process->readAllStandardOutput());
     ui->textBrowser->setText(_fileContents);
 }
 
